@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  app:
+    image: ubuntu/nginx:1.18-20.04_beta
+    ports:
+      - "80:80"
+    working_dir: /var/www/pichan
+    volumes:
+      - ./workspace:/var/www/pichan
+    restart: always
+    environment:
+      TZ: UTC
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - pichan-mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: pichan
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+  redis:
+    image: redis:7.0.5
+    restart: always
+    ports:
+      - "6379:6379"
+volumes:
+  pichan-mysql:
